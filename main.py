@@ -3,6 +3,7 @@ from discord.ext import commands
 import os
 from dotenv import load_dotenv
 import requests
+import json
 
 load_dotenv()
 
@@ -31,12 +32,43 @@ async def test(ctx):
 
 @bot.command()
 async def search(ctx, text:str):
+    embed = discord.Embed(title="Search", timestamp=discord.utils.utcnow(),
+                          colour=0x206694,)
     url = (f'{search_url}{text}')
     result = requests.get(url)
     hit = result.json()
+    data = json.loads(hit)
+    for hit in data["hits"]:
+        project_id = hit["project_id"]
+        project_type = hit["project_type"]
+        slug = hit["slug"]
+        author = hit["author"]
+        title = hit["title"]
+        description = hit["description"]
+        categories = hit["categories"]
+        display_categories = hit["display_categories"]
+        versions = hit["versions"]
+        downloads = hit["downloads"]
+        follows = hit["follows"]
+        icon_url = hit["icon_url"]
+        date_created = hit["date_created"]
+        date_modified = hit["date_modified"]
+        latest_version = hit["latest_version"]
+        license = hit["license"]
+        client_side = hit["client_side"]
+        server_side = hit["server_side"]
+        gallery = hit["gallery"]
+        featured_gallery = hit["featured_gallery"]
+        color = hit["color"]
+
+
+
+
+
+
+
     print(result,  url, hit)
-    embed = discord.Embed(title="Search", timestamp=discord.utils.utcnow(),
-                          colour=0x206694,)
+
     embed.add_field(name='resuld', value=hit)
     await ctx.send(embed=embed)
 
