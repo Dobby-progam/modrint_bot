@@ -32,9 +32,9 @@ async def test(ctx):
 
 @bot.command()
 async def search(ctx, text:str):
-    embed = discord.Embed(title="Search", timestamp=discord.utils.utcnow(),
-                          colour=0x206694,)
-    url = (f'{search_url}{text}')
+    #embed = discord.Embed(title="Search", timestamp=discord.utils.utcnow(),
+     #                     colour=0x206694,)
+    url = f'{search_url}{text}'
     result = requests.get(url)
     hit = result.json()
     data = json.loads(hit)
@@ -45,9 +45,9 @@ async def search(ctx, text:str):
         author = hit["author"]
         title = hit["title"]
         description = hit["description"]
-        categories = hit["categories"]
-        display_categories = hit["display_categories"]
-        versions = hit["versions"]
+        #categories = hit["categories"]
+        #display_categories = hit["display_categories"]
+        #versions = hit["versions"]
         downloads = hit["downloads"]
         follows = hit["follows"]
         icon_url = hit["icon_url"]
@@ -57,19 +57,18 @@ async def search(ctx, text:str):
         license = hit["license"]
         client_side = hit["client_side"]
         server_side = hit["server_side"]
-        gallery = hit["gallery"]
+       # gallery = hit["gallery"]
         featured_gallery = hit["featured_gallery"]
         color = hit["color"]
+        print(project_id, project_type,slug,author,title,description,categories,display_categories,versions, downloads,
+              follows, icon_url, date_created, date_modified, latest_version, license, client_side,server_side,gallery,featured_gallery,color)
 
+    #import json
+    #data = json.loads('{"one" : "1", "two" : "2", "three" : "3"}')
+    #print(data['two'])  # or `print data['two']` in Python 2
 
-
-
-
-
-
-    print(result,  url, hit)
-
-    embed.add_field(name='resuld', value=hit)
-    await ctx.send(embed=embed)
+    print(result,  url,)
+    #embed.add_field(name='resuld', value=hit)
+    #await ctx.send(embed=embed)
 
 bot.run(os.getenv('TOLKEN'))
