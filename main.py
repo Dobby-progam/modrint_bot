@@ -7,7 +7,7 @@ import json
 
 load_dotenv()
 
-search_url = 'https://api.modrinth.com/v2/search?limit=1&query='
+search_url = 'https://api.modrinth.com/v2/search?limit=2&query='
 intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(debug_guilds=[955135608228024394], command_prefix="-", status=discord.Status.dnd,
@@ -29,16 +29,22 @@ async def test(ctx):
     await ctx.respond("works")
     print("send command 'test!'")
 
+#store some code
+    #embed = discord.Embed(title="Search", timestamp=discord.utils.utcnow(),
+     #                     colour=0x206694,)
+    #import json
+    #data = json.loads('{"one" : "1", "two" : "2", "three" : "3"}')
+    #print(data['two'])  # or `print data['two']` in Python 2
+    #embed.add_field(name='resuld', value=hit)
+    #await ctx.send(embed=embed)
 
 @bot.command()
 async def search(ctx, text:str):
-    #embed = discord.Embed(title="Search", timestamp=discord.utils.utcnow(),
-     #                     colour=0x206694,)
     url = f'{search_url}{text}'
     result = requests.get(url)
     hit = result.json()
-    data = json.loads(hit)
-    for hit in data["hits"]:
+
+    for hit in hit["hits"]:
         project_id = hit["project_id"]
         project_type = hit["project_type"]
         slug = hit["slug"]
@@ -60,15 +66,11 @@ async def search(ctx, text:str):
        # gallery = hit["gallery"]
         featured_gallery = hit["featured_gallery"]
         color = hit["color"]
-        print(project_id, project_type,slug,author,title,description,categories,display_categories,versions, downloads,
-              follows, icon_url, date_created, date_modified, latest_version, license, client_side,server_side,gallery,featured_gallery,color)
+        print(project_id, project_type,slug,author,title,description, downloads,
+              follows, icon_url, date_created, date_modified, latest_version, license, client_side,server_side,featured_gallery,color)
 
-    #import json
-    #data = json.loads('{"one" : "1", "two" : "2", "three" : "3"}')
-    #print(data['two'])  # or `print data['two']` in Python 2
+
 
     print(result,  url,)
-    #embed.add_field(name='resuld', value=hit)
-    #await ctx.send(embed=embed)
 
 bot.run(os.getenv('TOLKEN'))
