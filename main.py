@@ -30,13 +30,12 @@ async def test(ctx):
     print("send command 'test!'")
 
 #store some code
-    #embed = discord.Embed(title="Search", timestamp=discord.utils.utcnow(),
-     #                     colour=0x206694,)
+
     #import json
     #data = json.loads('{"one" : "1", "two" : "2", "three" : "3"}')
     #print(data['two'])  # or `print data['two']` in Python 2
     #embed.add_field(name='resuld', value=hit)
-    #await ctx.send(embed=embed)
+    #
 
 @bot.command()
 async def search(ctx, text:str):
@@ -51,9 +50,9 @@ async def search(ctx, text:str):
         author = hit["author"]
         title = hit["title"]
         description = hit["description"]
-        #categories = hit["categories"]
-        #display_categories = hit["display_categories"]
-        #versions = hit["versions"]
+        categories = hit["categories"]
+        display_categories = hit["display_categories"]
+        versions = hit["versions"]
         downloads = hit["downloads"]
         follows = hit["follows"]
         icon_url = hit["icon_url"]
@@ -63,14 +62,27 @@ async def search(ctx, text:str):
         license = hit["license"]
         client_side = hit["client_side"]
         server_side = hit["server_side"]
-       # gallery = hit["gallery"]
+        gallery = hit["gallery"]
         featured_gallery = hit["featured_gallery"]
-        color = hit["color"]
+        color = hex(hit["color"])
         print(project_id, project_type,slug,author,title,description, downloads,
               follows, icon_url, date_created, date_modified, latest_version, license, client_side,server_side,featured_gallery,color)
+        print(result,  url,)
+        print('next thing \n')
+        embed = discord.Embed(title="result", timestamp=discord.utils.utcnow(),
+                             colour=hex(hit["color"]),)
+        embed.add_field(name='project ID:', value=project_id)
+        embed.add_field(name='project type', value=project_type)
+        embed.add_field(name='latest version', value=latest_version)
+        embed.add_field(name='resuld', value=hit)
+        embed.add_field(name='resuld', value=hit)
+        embed.add_field(name='resuld', value=hit)
+        embed.add_field(name='resuld', value=hit)
 
 
 
-    print(result,  url,)
+    await ctx.send(embed=embed)
+
+
 
 bot.run(os.getenv('TOLKEN'))
