@@ -46,6 +46,7 @@ async def search(ctx, text:str):
     result = requests.get(url)
     hit = result.json()
 
+
     for hit in hit["hits"]:
         project_id = hit["project_id"]
         project_type = hit["project_type"]
@@ -69,12 +70,12 @@ async def search(ctx, text:str):
         featured_gallery = hit["featured_gallery"]
         color = hex(hit["color"])
 
-        if client_side =='none':
+        if client_side =='none'or 'unsupported':
             client= ':negative_squared_cross_mark'
         else:
             client= ':white_check_mark:'
-        if server_side =='none':
-            server= ':negative_squared_cross_mark'
+        if server_side =='none'or 'unsupported':
+            server= ':negative_squared_cross_mark:'
         else:
             server= ':white_check_mark:'
 
@@ -83,6 +84,7 @@ async def search(ctx, text:str):
               follows, icon_url, date_created, date_modified, latest_version, license, client_side,server_side,featured_gallery,color)
 
         print('next thing \n')
+        print("*-*" * 50)
 
         embed = discord.Embed(title="result", timestamp=discord.utils.utcnow(),)
         embed.set_thumbnail(url=icon_url)
@@ -112,6 +114,7 @@ async def search(ctx, text:str):
         print("sending next embed")
     print('end message')
 
-
+#@bot.command()
+#async def lookup(ctx,projectID:str):
 
 bot.run(os.getenv('TOLKEN'))
