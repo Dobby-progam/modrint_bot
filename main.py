@@ -41,6 +41,7 @@ async def test(ctx):
 @bot.command()
 async def search(ctx, text:str):
     print('new request')
+    print("--"*50)
     url = f'{search_url}{text}'
     result = requests.get(url)
     hit = result.json()
@@ -77,12 +78,12 @@ async def search(ctx, text:str):
         else:
             server= ':white_check_mark:'
 
-
-
+        print(result, url, )
         print(project_id, project_type,slug,author,title,description, downloads,
               follows, icon_url, date_created, date_modified, latest_version, license, client_side,server_side,featured_gallery,color)
-        print(result,  url,)
+
         print('next thing \n')
+
         embed = discord.Embed(title="result", timestamp=discord.utils.utcnow(),)
         embed.set_thumbnail(url=icon_url)
 
