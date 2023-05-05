@@ -70,8 +70,8 @@ async def search(ctx, text:str):
               follows, icon_url, date_created, date_modified, latest_version, license, client_side,server_side,featured_gallery,color)
         print(result,  url,)
         print('next thing \n')
-        embed = discord.Embed(title="result", timestamp=discord.utils.utcnow(),
-                             )
+        embed = discord.Embed(title="result", timestamp=discord.utils.utcnow(),)
+        embed.set_thumbnail(url=icon_url)
         embed.add_field(name='project ID:', value=project_id)
         embed.add_field(name='project type', value=project_type)
         embed.add_field(name='latest version', value=latest_version)
@@ -89,8 +89,10 @@ async def search(ctx, text:str):
         embed.add_field(name='client side?', value=client_side)
         embed.add_field(name='server side?', value=server_side)
         embed.add_field(name='featured gallery', value=featured_gallery)
-    print("end of this message")
-    await ctx.respond(embed=embed)
+
+        await ctx.respond(embed=embed)
+        print("sending next embed")
+    print('end message')
 
 
 
