@@ -66,12 +66,25 @@ async def search(ctx, text:str):
         gallery = hit["gallery"]
         featured_gallery = hit["featured_gallery"]
         color = hex(hit["color"])
+
+        if client_side =='none':
+            client= ':negative_squared_cross_mark'
+        else:
+            client= ':white_check_mark:'
+        if server_side =='none':
+            server= ':negative_squared_cross_mark'
+        else:
+            server= ':white_check_mark:'
+
+
+
         print(project_id, project_type,slug,author,title,description, downloads,
               follows, icon_url, date_created, date_modified, latest_version, license, client_side,server_side,featured_gallery,color)
         print(result,  url,)
         print('next thing \n')
         embed = discord.Embed(title="result", timestamp=discord.utils.utcnow(),)
         embed.set_thumbnail(url=icon_url)
+
         embed.add_field(name='project ID:', value=project_id)
         embed.add_field(name='project type', value=project_type)
         embed.add_field(name='latest version', value=latest_version)
@@ -86,9 +99,12 @@ async def search(ctx, text:str):
         embed.add_field(name='date modifiy', value=date_modified)
         embed.add_field(name='latest version', value=latest_version)
         embed.add_field(name='license', value=license)
-        embed.add_field(name='client side?', value=client_side)
-        embed.add_field(name='server side?', value=server_side)
-        embed.add_field(name='featured gallery', value=featured_gallery)
+        embed.add_field(name='client side?', value=client)
+        embed.add_field(name='server side?', value=server)
+        if featured_gallery != 'None':
+            embed.set_image(url=featured_gallery)
+        else:
+            print(' no featured gallery')
 
         await ctx.respond(embed=embed)
         print("sending next embed")
