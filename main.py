@@ -37,6 +37,7 @@ async def test(ctx):
     #embed.add_field(name='resuld', value=hit)
     #
 
+
 @bot.command()
 async def search(ctx, text:str):
     url = f'{search_url}{text}'
@@ -70,18 +71,26 @@ async def search(ctx, text:str):
         print(result,  url,)
         print('next thing \n')
         embed = discord.Embed(title="result", timestamp=discord.utils.utcnow(),
-                             colour=hex(hit["color"]),)
+                             )
         embed.add_field(name='project ID:', value=project_id)
         embed.add_field(name='project type', value=project_type)
         embed.add_field(name='latest version', value=latest_version)
-        embed.add_field(name='resuld', value=hit)
-        embed.add_field(name='resuld', value=hit)
-        embed.add_field(name='resuld', value=hit)
-        embed.add_field(name='resuld', value=hit)
-
-
-
-    await ctx.send(embed=embed)
+        embed.add_field(name='slug', value=slug)
+        embed.add_field(name='author', value=author)
+        embed.add_field(name='title', value=title)
+        embed.add_field(name='description', value=description)
+        embed.add_field(name='downloads', value=downloads)
+        embed.add_field(name='follows', value=follows)
+        embed.add_field(name='icon imgae', value=icon_url)
+        embed.add_field(name='date created', value=date_created)
+        embed.add_field(name='date modifiy', value=date_modified)
+        embed.add_field(name='latest version', value=latest_version)
+        embed.add_field(name='license', value=license)
+        embed.add_field(name='client side?', value=client_side)
+        embed.add_field(name='server side?', value=server_side)
+        embed.add_field(name='featured gallery', value=featured_gallery)
+    print("end of this message")
+    await ctx.respond(embed=embed)
 
 
 
