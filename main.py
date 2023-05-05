@@ -40,6 +40,7 @@ async def test(ctx):
 
 @bot.command()
 async def search(ctx, text:str):
+    print('new request')
     url = f'{search_url}{text}'
     result = requests.get(url)
     hit = result.json()
@@ -101,7 +102,7 @@ async def search(ctx, text:str):
         embed.add_field(name='license', value=license)
         embed.add_field(name='client side?', value=client)
         embed.add_field(name='server side?', value=server)
-        if featured_gallery != 'None':
+        if featured_gallery is not None:
             embed.set_image(url=featured_gallery)
         else:
             print(' no featured gallery')
