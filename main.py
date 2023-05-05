@@ -20,7 +20,7 @@ bot = discord.Bot()
 async def on_ready():
     embed = discord.Embed(title=":green_circle: Online!\nNice modding!", timestamp=discord.utils.utcnow(),
                           colour=0x00f00, )
-    await bot.get_guild(955135608228024394).get_channel(1011649871511572500).send(embed=embed)
+    await bot.get_guild(955135608228024394).get_channel(1104138752529551480).send(embed=embed)
     print("Now ready!")
 
 
