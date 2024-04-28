@@ -8,6 +8,7 @@ import json
 load_dotenv()
 
 search_url = 'https://api.modrinth.com/v2/search?limit=2&query='
+version_url = 'https://api.modrinth.com/v2/project//version'
 intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(debug_guilds=[955135608228024394], command_prefix="-", status=discord.Status.dnd,
@@ -39,7 +40,7 @@ async def test(ctx):
 
 
 @bot.command()
-async def search(ctx, text:str):
+async def search_project(ctx, text:str):
     print('new request')
     print("--"*50)
     url = f'{search_url}{text}'
@@ -71,9 +72,10 @@ async def search(ctx, text:str):
         color = hex(hit["color"])
 
         if client_side =='none'or 'unsupported':
-            client= ':negative_squared_cross_mark'
+            client= ':negative_squared_cross_mark:'
         else:
             client= ':white_check_mark:'
+
         if server_side =='none'or 'unsupported':
             server= ':negative_squared_cross_mark:'
         else:
@@ -114,7 +116,62 @@ async def search(ctx, text:str):
         print("sending next embed")
     print('end message')
 
-#@bot.command()
-#async def lookup(ctx,projectID:str):
+
+
+@bot.command()
+async def lookup(ctx,projectid:str):
+    print('new request')
+    print("--"*50)
+
+    response = requests.get(f'https://api.modrinth.com/v2/project/{projectid}/version')
+    data = response.json()
+    print(data)
+    for version in data:
+        for game_versions in version["game_versions"]:
+            game_versions = data[0]
+        for loaders in data["loaders"]
+        #project_idr = data['project_id']
+        name = data["name"]
+        version_number = data["version_number"]
+        date_published = data["date_published"]
+        version_type = data["version_type"]
+        dependencies = data["dependencies"]
+        print(game_versions, loaders, project_idr, name, version_number, date_published, version_type, dependencies)
+
+    dependencies_str = ''
+    # If there are multiple dependencies, you can loop through them like this:
+    for dependency in dependencies:
+        version_id = dependency['version_id']
+        project_id = dependency['project_id']
+        file_name = dependency['file_name']
+        dependency_type = dependency['dependency_type']
+
+        dependencies_str += f'Version ID: {version_id}, Project ID: {project_id}, File Name: {file_name}, Dependency Type: {dependency_type}\n'
+
+
+    embed = discord.Embed(title="result", timestamp=discord.utils.utcnow(),)
+    embed.add_field(name='project ID:', value=project_idr)
+    embed.add_field(name='name', value=name)
+    embed.add_field(name='version number', value=version_number)
+    embed.add_field(name='date published', value=date_published)
+    embed.add_field(name='version type', value=version_type)
+    embed.add_field(name='game versions', value=game_versions)
+    embed.add_field(name='loaders', value=loaders)
+    embed.add_field(name='dependencies', value=dependencies_str)
+    
+    await ctx.respond(embed=embed)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 bot.run(os.getenv('TOLKEN'))
