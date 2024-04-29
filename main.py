@@ -117,58 +117,29 @@ async def search_project(ctx, text:str):
     print('end message')
 
 
-
-@bot.command()
-async def lookup(ctx, projectid: str):
+@bot.command() 
+async def versionlookup(ctx, versionid: str):
     print('new request')
     print("--"*50)
 
-    response = requests.get(f'https://api.modrinth.com/v2/project/{projectid}/version')
+    response = requests.get(f'https://api.modrinth.com/v2/version/{versionid}')
     data = response.json()
-    print(data)
-    if data:
-        version = data[0]  # Only take the first version
-        game_versions = version["game_versions"]
-        loaders = version["loaders"]
-        name = version["name"]
-        version_number = version["version_number"]
-        date_published = version["date_published"]
-        version_type = version["version_type"]
-        dependencies = version["dependencies"]
-        print(game_versions, loaders, name, version_number, date_published, version_type, dependencies)
 
-        dependencies_str = ''
-        # If there are multiple dependencies, you can loop through them like this:
-        for dependency in dependencies:
-            version_id = dependency['version_id']
-            project_id = dependency['project_id']
-            file_name = dependency['file_name']
-            dependencies_str += f"Version ID: {version_id}, Project ID: {project_id}, File Name: {file_name}\n"
-        print(dependencies_str)
-        
+    game_versions = ', '.join(data["game_versions"])
+    loaders = ', '.join(data["loaders"])
+    dependencies = ', '.join([f'{dep["project_id"]}: {dep["dependency_type"]}' for dep in data["dependencies"]])
+    changelog = data["changelog"].replace('\r\n', ' ')
+    print(dependencies)
     embed = discord.Embed(title="result", timestamp=discord.utils.utcnow(),)
-    embed.add_field(name='project ID:', value=project_id)
-    embed.add_field(name='name', value=name)
-    embed.add_field(name='version number', value=version_number)
-    embed.add_field(name='date published', value=date_published)
-    embed.add_field(name='version type', value=version_type)
+    embed.add_field(name='Game ID:', value=data["name"])
+    embed.add_field(name='name', value=data["name"])
+    embed.add_field(name='date published', value=data["date_published"])
+    embed.add_field(name='version type', value=data["version_type"])
     embed.add_field(name='game versions', value=game_versions)
     embed.add_field(name='loaders', value=loaders)
-    embed.add_field(name='dependencies', value=dependencies_str)
-    
+    embed.add_field(name='dependencies', value=dependencies)
+    embed.add_field(name='changelog', value=changelog) 
+
     await ctx.respond(embed=embed)
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 bot.run(os.getenv('TOLKEN'))
