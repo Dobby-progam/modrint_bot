@@ -119,38 +119,35 @@ async def search_project(ctx, text:str):
 
 
 @bot.command()
-async def lookup(ctx,projectid:str):
+async def lookup(ctx, projectid: str):
     print('new request')
     print("--"*50)
 
     response = requests.get(f'https://api.modrinth.com/v2/project/{projectid}/version')
     data = response.json()
     print(data)
-    for version in data:
-        for game_versions in version["game_versions"]:
-            game_versions = data[0]
-        for loaders in data["loaders"]
-        #project_idr = data['project_id']
-        name = data["name"]
-        version_number = data["version_number"]
-        date_published = data["date_published"]
-        version_type = data["version_type"]
-        dependencies = data["dependencies"]
-        print(game_versions, loaders, project_idr, name, version_number, date_published, version_type, dependencies)
+    if data:
+        version = data[0]  # Only take the first version
+        game_versions = version["game_versions"]
+        loaders = version["loaders"]
+        name = version["name"]
+        version_number = version["version_number"]
+        date_published = version["date_published"]
+        version_type = version["version_type"]
+        dependencies = version["dependencies"]
+        print(game_versions, loaders, name, version_number, date_published, version_type, dependencies)
 
-    dependencies_str = ''
-    # If there are multiple dependencies, you can loop through them like this:
-    for dependency in dependencies:
-        version_id = dependency['version_id']
-        project_id = dependency['project_id']
-        file_name = dependency['file_name']
-        dependency_type = dependency['dependency_type']
-
-        dependencies_str += f'Version ID: {version_id}, Project ID: {project_id}, File Name: {file_name}, Dependency Type: {dependency_type}\n'
-
-
+        dependencies_str = ''
+        # If there are multiple dependencies, you can loop through them like this:
+        for dependency in dependencies:
+            version_id = dependency['version_id']
+            project_id = dependency['project_id']
+            file_name = dependency['file_name']
+            dependencies_str += f"Version ID: {version_id}, Project ID: {project_id}, File Name: {file_name}\n"
+        print(dependencies_str)
+        
     embed = discord.Embed(title="result", timestamp=discord.utils.utcnow(),)
-    embed.add_field(name='project ID:', value=project_idr)
+    embed.add_field(name='project ID:', value=project_id)
     embed.add_field(name='name', value=name)
     embed.add_field(name='version number', value=version_number)
     embed.add_field(name='date published', value=date_published)
